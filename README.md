@@ -1,3 +1,28 @@
+# Air Call
+
+A React call activity interface with call details, archived calls and individual or bulk archive actions through a REST API.
+
+[Live demo](https://15e27db3.vercel.app/)
+
+## Local development
+
+Run these commands from the repository root:
+
+```sh
+npm install
+npm start
+```
+
+Available scripts:
+
+- `npm run build`: `webpack --mode production`.
+
+## Main dependencies
+
+`react`. See `package.json` for the full dependency list and versions.
+
+## Original exercise and API reference
+
 ## Summary
 
 The goal of this test is to make you code a small ReactJS app. We have prepared a skeleton app for you, but feel free to change anything (CSS files, HTML structure, JS structure, etc) to suit your needs.
@@ -9,7 +34,7 @@ The app should have the following features:
 - A button to archive all calls in the activity feed
 - A button to unarchive all calls in the archived calls tab
 
-Show us what you can do in 48 hours. You will be assessed on the following parameters: 
+The original exercise evaluated: 
 - Focus on design sense (Pay attention to the UI/UX and transitions)
 - React Best Practices
 - Code Readability and Maintainability
