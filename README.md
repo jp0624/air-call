@@ -1,98 +1,47 @@
-# Air Call
+# Aircall / Workspace
 
-A React call activity interface with call details, archived calls and individual or bulk archive actions through a REST API.
+A sharp-edged, responsive telecom-style call activity interface built with React, TypeScript, Vite and Tailwind CSS 4.
 
-[Live demo](https://15e27db3.vercel.app/)
+[Live workspace](https://15e27db3.vercel.app/)
 
-## Local development
+## Features
 
-Run these commands from the repository root:
+- Activity feed and archive with individual and bulk archive/restore.
+- Search by contact, company or number; filter by outcome, direction and local date.
+- Full call details, selection controls, sorting, incremental loading and CSV export of the current view.
+- Browser-persisted fictional demo records, with a reset action and clear storage-error messaging.
+- Optional connection to the original exercise REST API. Requests time out, report failures and retain existing data.
+- Bulk API updates use batches of four. Successful changes stay applied; failures remain unchanged and are reported. No per-item feed refetches.
+- Responsive layouts from narrow phones to desktops, keyboard focus styles and reduced-motion support.
+- No rounded corners. Tailwind 4 is integrated through the Vite plugin, with shared design tokens in `src/styles.css`.
+
+## Development
+
+Use Node 24:
 
 ```sh
-npm install
-npm start
+npm ci
+npm run dev
+npm test
+npm run build
 ```
 
-Available scripts:
+The production output is `dist`. `vercel.json` declares the Vite build and frontend fallback route. Compiled bundles are not committed.
 
-- `npm run build`: `webpack --mode production`.
+## Data and service boundaries
 
-## Main dependencies
+The default **Demo workspace** contains 32 fictional call records. Archive state persists only in this browser. No telephone calls, texts, recordings or real business metrics are created. Demo dates and metrics are generated from the sample records.
 
-`react`. See `package.json` for the full dependency list and versions.
+**Try original API** requests `https://aircall-api.onrender.com/activities`. The original external service returned HTTP 503 during this update; its availability is outside this repository. If connection fails, the demo remains usable and an error is displayed. If connection succeeds, the source label changes and archive operations use `PATCH /activities/:id` with `{is_archived:boolean}`. The legacy shared reset endpoint is not invoked.
 
-## Original exercise and API reference
+To use another compatible API, set the public build variable `VITE_AIRCALL_API_URL`. Never put secrets in a Vite public variable.
 
-## Summary
+CSV exports include only the filtered current folder, escape CSV quotes and guard against spreadsheet formula prefixes.
 
-The goal of this test is to make you code a small ReactJS app. We have prepared a skeleton app for you, but feel free to change anything (CSS files, HTML structure, JS structure, etc) to suit your needs.
+## Verification
 
-The app should have the following features:
-- **Activity Feed** - simple list of calls
-- **Activity Detail** - detail of a call
-- **Archive** - the final user should be able to archive (and unarchive) a call. Archived calls will no longer be displayed on the Activity Feed and should have a separate Archived Tab.
-- A button to archive all calls in the activity feed
-- A button to unarchive all calls in the archived calls tab
+`npm test` covers data normalization, duplicate/invalid records, formatting, HTTP failure/timeout, individual archive/restore, persistence, filtered bulk actions and partial API failure. Browser checks cover export, menus, mobile layout and square-edged controls.
 
-The original exercise evaluated: 
-- Focus on design sense (Pay attention to the UI/UX and transitions)
-- React Best Practices
-- Code Readability and Maintainability
+## Project cleanup
 
-## Submission Requirements
-After you're done with the assignment, please submit a link to the **GitHub/Bitbucket repository** (make sure it's public) with your code **AND** a deployment link where our recruiters can interact with the live version. You can use freely available tools like **Netlify, Vercel, Render, etc** to deploy your React application.
-
-Your repository name should be the first 8 digits of a UUID. A random UUID can be generated from any site like this one: https://www.uuidgenerator.net/version4. This is to prevent malicious actors from plagiarizing your submission by searching for it on GitHub, since your repository is public.
-
-For example: Your respository name here will be `036b1c95` and the repository URL that you submit will look like: `https://github.com/<your-username>/036b1c95`
-<img width="782" alt="Screenshot 2024-01-10 at 10 07 47 PM" src="https://github.com/speer-technologies/aircall/assets/66385959/64fd4b89-e288-4e31-ad62-0949a686088a">
-
-Once done, the assessment (along with other details) must be submitted on the following Google Form and NOT via email: https://forms.gle/itbJiaZ1TjToL45D8
-
-**Note:** Submissions that fail to comply with any of the above submission requirements will be removed from any further consideration.
-
-To give you an example/reference, here's what the app could look like:
-
-
-![app](https://user-images.githubusercontent.com/630714/29357034-763d7216-8276-11e7-8bcb-e77d9645dfcc.png)
-
-## Installation
-
-We're using [yarn](https://yarnpkg.com) here (but you can use npm):
-
-```
-yarn install
-yarn start
-```
-
-**Note**: Please make sure to run the app in Node 16.
-
-## API documentation
-
-### Routes
-
-Here is the base URL of the API: [https://aircall-api.onrender.com](https://aircall-api.onrender.com/) <br>
-
-The API is hosted on a free server, which is why the first time you call the API it might throw an error. The server goes to sleep if there hasn't been any activity for a while, but after 30-60 seconds of making the first call, it should work as expected. Please reach out to us in case it doesn't.
-
-- **GET** - BASE_URL/activities: get calls to display in the Activity Feed
-- **GET** - BASE_URL/activities/<call_id> retrieve a specific call details
-- **PATCH** - BASE_URL/activities/<call_id> update a call. The only field updatable is `is_archived (bool)`. You'll need to send a JSON in the request body:
-```
-{
-  is_archived: true
-}
-```
-- **PATCH** - BASE_URL/reset: Reset all calls to initial state (usefull if you archived all calls).
-
-### Call object
-
-- **id** - unique ID of call
-- **created_at** - creation date
-- **direction** - `inbound` or `outbound` call
-- **from** - caller's number
-- **to** - callee's number
-- **via** - Aircall number used for the call
-- **duration** - duration of a call (in seconds)
-- **is_archived** - call is archived or not
-- **call_type** - can be a `missed`, `answered` or `voicemail` call.
+The old Webpack/SCSS build, mixed Tailwind 3/4 configuration, unused UI wrappers and committed static bundles were replaced by one Vite/Tailwind 4 pipeline. This is an independent portfolio exercise inspired by Aircall, not an official Aircall product.
